@@ -1,24 +1,16 @@
-// TODOS LOS NÚMEROS DE PINES ESTÁN EN MODO DE EJEMPLOS
-// ELIMINAR ESTO CUÁNDO ESTEN EN SUS VALORES CORRECTOS
 
 //--------------FUNCIONES GLOBALES---------------
 #define DEBUG 1
 #define ON HIGH
 #define OFF LOW
-#define IZQUIERDA 1
-#define DERECHA 0
-#define FRENAR -1
-#define izquierdo 1
-#define derecho 0
-#define RETROCEDER 0
 
 //-------------------MOTORES---------------------
-#define MOTOR_DER_1 2
-#define MOTOR_DER_2 3
-#define MOTOR_IZQ_1 4
-#define MOTOR_IZQ_2 5
-#define PWM_MOTOR_DER 6
-#define PWM_MOTOR_IZQ 7
+#define MOTOR_DER_1 8
+#define MOTOR_DER_2 7
+#define MOTOR_IZQ_1 9
+#define MOTOR_IZQ_2 10
+#define PWM_MOTOR_DER 3
+#define PWM_MOTOR_IZQ 11
 
 int Pines_Motor[4] = {
   MOTOR_DER_1,
@@ -31,7 +23,7 @@ int Pines_Motor[4] = {
 #define SPEED_ATTACK 255
 
 //-------------------PULSADOR--------------------
-#define PIN_PULSADOR A5
+#define PIN_PULSADOR A3
 enum PULSADORES {
   BOTON_GO
 };
@@ -46,16 +38,23 @@ bool pulsadorEsLiberado(int index) {
 }
 
 //------------------ULTRASONIDO------------------
-#define PIN_TRIG 11
-#define PIN_ECHO 10
+#define PIN_TRIG 5
+#define PIN_ECHO 6
 long Tiempo;
 long Distancia;
 
 //--------------------SHARP´S--------------------
-#define PIN_SHARP_F_D A2
-#define PIN_SHARP_F_I A3
-#define PIN_SHARP_DER A4
-#define PIN_SHARP_IZQ A5
+#define PIN_SHARP_F_D A7
+#define PIN_SHARP_F_I A6
+#define PIN_SHARP_DER A5
+#define PIN_SHARP_IZQ A4
+
+int Pines_Sharps[4] = {
+  PIN_SHARP_F_D,
+  PIN_SHARP_F_I,
+  PIN_SHARP_DER,
+  PIN_SHARP_IZQ,
+};
 
 //---------------------CNY70---------------------
 unsigned int CNY70der = 0;
@@ -150,21 +149,14 @@ void setup() {
   pinMode(PIN_PULSADOR, INPUT);
   pinMode(PIN_ECHO, INPUT);
   pinMode(PIN_TRIG, OUTPUT);
+  pinMode(MOTOR_DER_1, OUTPUT);
+  pinMode(MOTOR_DER_2, OUTPUT);
+  pinMode(MOTOR_IZQ_1, OUTPUT);
+  pinMode(MOTOR_IZQ_2, OUTPUT);
   digitalWrite(PIN_TRIG, LOW);  //Talvez Sacar.
 }
 
 //--------------------LOOP-------------------
 void loop() {
-  switch (estado) {
-    case ESPERAR:
-      if (DEBUG) Serial.println("Esperando boton");
 
-      if (pulsadorEsLiberado(BOTON_GO)) {
-        estado = COMBATIR;
-        delay(5000);
-      }
-      break;
-      
-    case COMBATIR:
-  }
 }
