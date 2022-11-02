@@ -1,4 +1,4 @@
-#define PIN_PULSADOR A3
+#define PIN_PULSADOR 5
 #define DEBUG 1
 #define PIN_LED 13
 bool pantalla = true;
@@ -37,7 +37,7 @@ void setup() {
 void loop() {
 
 
-  pulsador = analogRead(PIN_PULSADOR);
+  pulsador = digitalRead(PIN_PULSADOR);
   delay(200);
 
 
