@@ -1,8 +1,11 @@
+#include "Arduino.h"
+
 void EncenderLed()
 {
     digitalWrite(PIN_LED, HIGH);
     delay(250);
     digitalWrite(PIN_LED, LOW);
+    delay(250);
 }
 
 /*void SensarQRE()
@@ -47,8 +50,8 @@ void MotorIzqStop()
 
 void MotorDerGoATAQUE()
 {
-    digitalWrite(MOTOR_DER_1, HIGH);
-    digitalWrite(MOTOR_DER_2, LOW);
+    digitalWrite(MOTOR_DER_1, LOW);
+    digitalWrite(MOTOR_DER_2, HIGH);
     analogWrite(PWM_MOTOR_DER, VELOCIDAD_ATAQUE);
 }
 
@@ -59,28 +62,79 @@ void MotorIzqGoATAQUE()
     analogWrite(PWM_MOTOR_IZQ, VELOCIDAD_ATAQUE);
 }
 
-void MotorDerGoBuscar(){
-    digitalWrite(MOTOR_DER_1, HIGH);
-    digitalWrite(MOTOR_DER_2, LOW);
+void MotorDerGoBuscar()
+{
+    digitalWrite(MOTOR_DER_1, LOW);
+    digitalWrite(MOTOR_DER_2, HIGH);
     analogWrite(PWM_MOTOR_DER, VELOCIDAD_BUSCAR);
 }
 
 
-void MotorIzqGoBuscar(){
+void MotorIzqGoBuscar()
+{
     digitalWrite(MOTOR_IZQ_1, LOW);
     digitalWrite(MOTOR_IZQ_2, HIGH);
     analogWrite(PWM_MOTOR_IZQ, VELOCIDAD_BUSCAR);
 }
 
-void MotorDerGoGhirar(){
+void MotorDerGoGhirar()
+{
     digitalWrite(MOTOR_DER_1, LOW);
     digitalWrite(MOTOR_DER_2, HIGH);
     analogWrite(PWM_MOTOR_DER, VELOCIDAD_GHIRAR);
 }
 
-void MotorIzqGoGhirar(){
+void MotorIzqGoGhirar()
+{
     digitalWrite(MOTOR_IZQ_1, LOW);
     digitalWrite(MOTOR_IZQ_2, HIGH);
     analogWrite(PWM_MOTOR_IZQ, VELOCIDAD_GHIRAR);
+}
+
+void MotorDerGoGhirarSlow()
+{
+    digitalWrite(MOTOR_DER_1, LOW);
+    digitalWrite(MOTOR_DER_2, HIGH);
+    analogWrite(PWM_MOTOR_DER, VELOCIDAD_GHIRARSLOW);
+}
+
+void MotorIzqGoGhirarSlow()
+{
+    digitalWrite(MOTOR_IZQ_1, LOW);
+    digitalWrite(MOTOR_IZQ_2, HIGH);
+    analogWrite(PWM_MOTOR_IZQ, VELOCIDAD_GHIRARSLOW);
+}
+
+void MotorDerBaGhirarSlow()
+{
+    digitalWrite(MOTOR_DER_1, HIGH);
+    digitalWrite(MOTOR_DER_2, LOW);
+    analogWrite(PWM_MOTOR_DER, VELOCIDAD_GHIRARSLOW);
+}
+
+void MotorIzqBaGhirarSlow()
+{
+    digitalWrite(MOTOR_IZQ_1, HIGH);
+    digitalWrite(MOTOR_IZQ_2, LOW);
+    analogWrite(PWM_MOTOR_IZQ, VELOCIDAD_GHIRARSLOW);
+}
+
+void MotorIzqBaATAQUE()
+{
+    digitalWrite(MOTOR_IZQ_1, HIGH);
+    digitalWrite(MOTOR_IZQ_2, LOW);
+    analogWrite(PWM_MOTOR_IZQ, VELOCIDAD_ATAQUE);
+}
+
+void MotorIzqBaGhirar(){
+    digitalWrite(MOTOR_IZQ_1, HIGH);
+    digitalWrite(MOTOR_IZQ_2, LOW);
+    analogWrite(PWM_MOTOR_IZQ, VELOCIDAD_GHIRAR);
+}
+
+void MotorDerBaGhirar(){
+    digitalWrite(MOTOR_DER_1, HIGH);
+    digitalWrite(MOTOR_DER_2, LOW);
+    analogWrite(PWM_MOTOR_DER, VELOCIDAD_GHIRAR);
 }
 

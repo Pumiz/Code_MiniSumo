@@ -1,16 +1,18 @@
-#define MOTOR_DER_1 8
-#define MOTOR_DER_2 9
+#define MOTOR_DER_1 5
+#define MOTOR_DER_2 6
 #define MOTOR_IZQ_1 7
-#define MOTOR_IZQ_2 6
+#define MOTOR_IZQ_2 8
 #define PWM_MOTOR_DER 3
 #define PWM_MOTOR_IZQ 11
 
-#define PIN_PULSADOR 5
+#define PIN_PULSADOR 4
 #define PIN_LED 13
+#define tiempo_lectura 200
 
 #define VELOCIDAD_BUSCAR 150
 #define VELOCIDAD_ATAQUE 255
 #define VELOCIDAD_GHIRAR 200
+#define VELOCIDAD_GHIRARSLOW 60
 
 #define PIN_TRIG 9
 #define PIN_ECHO 10
@@ -21,9 +23,12 @@
 #define PIN_JSUMO_F_D A7
 #define PIN_JSUMO_F_I A4
 
-#define QRE_DERECHO A0
-#define QRE_IZQUIERDO A1
+#define QRE_DERECHO A1
+#define QRE_IZQUIERDO A0
 
+unsigned long tiempo_acorralar_anterior = 30000;
+unsigned long tiempo_acorralar_actual = 0;
+unsigned long tiempo_max = 7000;
 unsigned int QREder = 0;
 unsigned int QREizq = 0;
 unsigned int BordeTatami = 500; // Si ve lìnea blanca tende a 200
