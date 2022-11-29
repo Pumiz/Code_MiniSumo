@@ -7,11 +7,11 @@
 
 #define PIN_PULSADOR 4
 #define PIN_LED 13
-#define tiempo_lectura 200
 
 #define VELOCIDAD_BUSCAR 150
 #define VELOCIDAD_ATAQUE 255
 #define VELOCIDAD_GHIRAR 200
+#define VELOCIDAD_LIMPIAR 200
 #define VELOCIDAD_GHIRARSLOW 60
 
 #define PIN_TRIG 9
@@ -28,7 +28,12 @@
 
 unsigned long tiempo_acorralar_anterior = 30000;
 unsigned long tiempo_acorralar_actual = 0;
-unsigned long tiempo_max = 7000;
+int caso = 0;
+unsigned int tiempo = 0;
+unsigned long tiempo_max = 200; //aprox es un 1seg.
+unsigned int tiempo_min = 20;
+bool pantalla = true;
+bool Mode = false;
 unsigned int QREder = 0;
 unsigned int QREizq = 0;
 unsigned int BordeTatami = 500; // Si ve lìnea blanca tende a 200
