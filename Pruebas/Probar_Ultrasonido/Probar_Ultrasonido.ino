@@ -1,4 +1,4 @@
-const int Trigger = 9; 
+ const int Trigger = 9; 
 const int Echo = 10;   
 
 void setup() {
@@ -7,7 +7,7 @@ void setup() {
   pinMode(Echo, INPUT);  //pin como entrada
   digitalWrite(Trigger, LOW);//Inicializamos el pin con 0
 }
-
+ 
 void loop()
 {
 

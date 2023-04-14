@@ -32,6 +32,6 @@ AsignacionPines();
 }
 
 void loop() {
-sensor = analogRead(PIN_JSUMO_F_I);
+sensor = analogRead(PIN_JSUMO_F_D);
 Serial.println(sensor);
 }
