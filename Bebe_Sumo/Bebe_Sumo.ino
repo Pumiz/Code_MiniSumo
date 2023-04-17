@@ -5,7 +5,8 @@
 //--------------FUNCIONES GLOBALES---------------
 
 #define DEBUG_PULSADOR 1  // con DEBUG en 0 NO muestra SerialPrint´s
-#define DEBUG_CASOS 0
+#define DEBUG_CASOS 0 //Debug del print despues de los 5 segundos.
+#define DEBUG_ESTRATEGIA 1  // Debug para saber en que if cae en cada estrategia.
 #define DEBUG_SHARP 0
 #define DEBUG_Error404 1
 #include "Define.h"
@@ -159,19 +160,15 @@ void Menu()
     // cambiar estrategia
     caso++;
     tiempo = 0;
-    if (DEBUG_PULSADOR)
-      Serial.print("Estas en: ");
-    if (DEBUG_PULSADOR)
-      Serial.println(ESTADOS[caso]);
+    if (DEBUG_PULSADOR)Serial.print("Estas en: ");
+    if (DEBUG_PULSADOR)Serial.println(ESTADOS[caso]);
     pantalla = true;
   }
   else if (tiempo > tiempo_max && pantalla == true)
   {
     // entrar en el modo
-    if (DEBUG_PULSADOR)
-      Serial.print("En ruedo: ");
-    if (DEBUG_PULSADOR)
-      Serial.println(ESTADOS[caso]);
+    if (DEBUG_PULSADOR)Serial.print("Esperando 5seg. Inicia en: ");
+    if (DEBUG_PULSADOR)Serial.println(ESTADOS[caso]);
     digitalWrite(PIN_LED, HIGH);
     delay(5000);
     digitalWrite(PIN_LED, LOW);
