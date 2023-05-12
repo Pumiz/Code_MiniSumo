@@ -8,10 +8,9 @@
 #define DEBUG_CASOS 0 //Debug del print despues de los 5 segundos.
 #define DEBUG_ESTRATEGIA 1  // Debug para saber en que if cae en cada estrategia.
 #define DEBUG_SHARP 0
-#define DEBUG_Error404 1
+#define DEBUG_Error404 0
 #include "Define.h"
 #include "OnlyWrite.h"
-#include "Sharp.h"
 
 //-------------------MOTORES---------------------
 int Pines_Motor[8] = {
@@ -57,9 +56,9 @@ long Distancia;
 // AMARILLO: GND
 // CELESTE:  VCC
 
-unsigned int SHARP_der = 0;
-unsigned int SHARP_izq = 0;
-unsigned int RivalSharp = 60; // 60cm, basicamente al otra punta de tatami.
+float SHARP_der;
+float SHARP_izq;
+float RivalSharp = 3.16; //Numeros en centímetros.
 
 int Pines_Sharps[4] = {
     PIN_SHARP_DER,
@@ -101,7 +100,6 @@ int Pines_QRE[2] = {
 };
 
 //--------------------FUNCIONES-------------------
-
 void AsignacionPines()
 {
   for (int idx = 0; idx < 7; idx++)
@@ -146,6 +144,20 @@ void SensarSensores()
   QREizq = analogRead(PIN_QRE_IZQUIERDO);
   JSUMO_izq = analogRead(PIN_JSUMO_F_I);
   JSUMO_der = analogRead(PIN_JSUMO_F_D);
+}
+
+void LeerSharp(){
+  analogValueDer = analogRead(PIN_SHARP_DER);
+  voltageDer = analogValueDer / 1024. * 5;
+  resistenciaDer = 2000 * voltageDer / (1 - voltageDer / 5);
+  SHARP_der = pow(50 * 1e3 * pow(10, 0.7) / resistenciaDer, (1 / 0.7));
+  SHARP_der = SHARP_der / 10;
+
+  analogValue = analogRead(PIN_SHARP_IZQ);
+  voltage = analogValue / 1024. * 5;
+  resistencia = 2000 * voltage / (1 - voltage / 5);
+  SHARP_izq = pow(50 * 1e3 * pow(10, 0.7) / resistencia, (1 / 0.7));
+  SHARP_izq = SHARP_izq / 10;
 }
 
 void Menu()

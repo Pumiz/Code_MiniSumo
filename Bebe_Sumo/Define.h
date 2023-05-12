@@ -12,7 +12,7 @@
 #define VELOCIDAD_VER_FLAGS 175   //testar velocidad antes de establecer.
 #define VELOCIDAD_ATAQUE 255
 #define VELOCIDAD_GHIRAR 200
-#define VELOCIDAD_LIMPIAR 200
+#define VELOCIDAD_LIMPIAR 150
 #define VELOCIDAD_GHIRARSLOW 60
 
 #define PIN_TRIG 9
@@ -27,6 +27,12 @@
 #define PIN_QRE_DERECHO A1
 #define PIN_QRE_IZQUIERDO A0
 
+int analogValueDer;
+int analogValue;
+float voltageDer;
+float voltage;
+float resistenciaDer;
+float resistencia;
 unsigned long tiempo_acorralar_anterior = 30000;
 unsigned long tiempo_acorralar_actual = 0;
 int caso = 0;

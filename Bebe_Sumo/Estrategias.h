@@ -4,7 +4,7 @@ void LimpiarRuedas()
 {
   MotorDerGoLimpiar();
   MotorIzqGoLimpiar();
-  if(DEBUG_ESTRATEGIA)Serial.println("");
+  if(DEBUG_ESTRATEGIA)Serial.println("Limpiando Ruedas");
 }
 
 //------------------------MATAR------------------------- // A RETOCAR
@@ -156,7 +156,7 @@ void TeEspero()
   {
     MotorDerGoGhirar();
     MotorIzqBaGhirar();
-    if(DEBUG_ESTRATEGIA)Serial.println("SHARP: Rival a la DERECHA"); 
+    if(DEBUG_ESTRATEGIA)Serial.println("SHARP: Rival a la DERECHAA"); 
   }
 }
 
@@ -231,7 +231,7 @@ void TeEsperoWithFlags()
     MotorDerGoGhirar();
     MotorIzqBaGhirar();
     if(DEBUG_ESTRATEGIA)Serial.println("SHARP: Rival a la DERECHA"); 
-  }
+  } 
 
   /*  
   if (Distancia < 35 && SHARP_der < RivalSharp)
