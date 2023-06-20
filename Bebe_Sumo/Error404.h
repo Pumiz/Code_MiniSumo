@@ -11,7 +11,7 @@ void DetectarErrores() {
     if (DEBUG_Error404)
       Serial.println("Error404: ULTRASONIDO");
   }
- /*
+
   if (SHARP_izq == 0) {
     if (DEBUG_Error404)
       Serial.println("Error404: SHARP IZQUIERDO");
@@ -21,7 +21,6 @@ void DetectarErrores() {
     if (DEBUG_Error404)
       Serial.println("Error404: SHARP DERECHO");
   }
-  */
 
   if (JSUMO_izq > 320 && JSUMO_izq < 480) {
     if (DEBUG_Error404)

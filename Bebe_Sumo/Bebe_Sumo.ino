@@ -3,9 +3,9 @@
 
 
 //--------------FUNCIONES GLOBALES---------------
-
 #define DEBUG_PULSADOR 1  // con DEBUG en 0 NO muestra SerialPrint´s
-#define DEBUG_CASOS 0
+#define DEBUG_CASOS 0 //Debug despues de los 5 segundos.
+#define DEBUG_ESTRATEGIA 1  // Debug para saber en que if cae en cada estrategia.
 #define DEBUG_SHARP 0
 #define DEBUG_Error404 1
 #include "Define.h"
@@ -14,31 +14,36 @@
 
 //-------------------MOTORES---------------------
 int Pines_Motor[8] = {
-  MOTOR_DER_1,
-  MOTOR_DER_2,
-  MOTOR_IZQ_1,
-  MOTOR_IZQ_2,
-  PWM_MOTOR_DER,
-  PWM_MOTOR_IZQ,
-  PIN_TRIG,
-  PIN_LED
-};
+    MOTOR_DER_1,
+    MOTOR_DER_2,
+    MOTOR_IZQ_1,
+    MOTOR_IZQ_2,
+    PWM_MOTOR_DER,
+    PWM_MOTOR_IZQ,
+    PIN_TRIG,
+    PIN_LED
+    };
 
 //-------------------PULSADOR-------------------
-enum Modo {
+enum Modo
+{
   Limpiar_Ruedas,
-  Atacar_Derecha,
-  Te_Espero,
+  Ataque_Derecha,
+  Ataque_Izquierda,           
+  Espero_Derecha,
+  Espero_Izquierda,
   Atacar,
-  Te_Espero_Flags
+  Espero_Flags
 };
 
 String ESTADOS[] = {
-  "Limpiar_Ruedas",
-  "Atacar_Derecha",
-  "Te_Espero",
-  "Atacar",
-  "Te_Espero_Flags",
+    "Limpiar_Ruedas",
+    "Ataque_Derecha",
+    "Ataque_Izquierda",
+    "Espero_Derecha",
+    "Espero_Izquierda",
+    "Atacar",
+    "Espero_Flags",  
 };
 
 //------------------ULTRASONIDO------------------
@@ -57,13 +62,13 @@ long Distancia;
 
 unsigned int SHARP_der = 0;
 unsigned int SHARP_izq = 0;
-unsigned int RivalSharp = 60;  // 60cm, basicamente al otra punta de tatami.
+unsigned int RivalSharp = 60; // 60cm, basicamente al otra punta de tatami.
 
 int Pines_Sharps[4] = {
-  PIN_SHARP_DER,
-  PIN_SHARP_IZQ,
-  PIN_ECHO,
-  PIN_PULSADOR
+    PIN_SHARP_DER,
+    PIN_SHARP_IZQ,
+    PIN_ECHO,
+    PIN_PULSADOR
 };
 
 //----------------------JSUMO--------------------
@@ -75,12 +80,12 @@ int sensor = 0;
 
 unsigned int JSUMO_der = 0;
 unsigned int JSUMO_izq = 0;
-unsigned int Rival = 500;  // Si no ve nada tira 0 o tende a valores muy cercados. Ej: 17
+unsigned int Rival = 500; // Si no ve nada tira 0 o tende a valores muy cercados. Ej: 17
 // Si detecta algo, NO IMPORTA LA DISTANCIA tende a arriba de los 800.
 
 int Pines_JSUMO[2] = {
-  PIN_JSUMO_F_D,
-  PIN_JSUMO_F_I,
+    PIN_JSUMO_F_D,
+    PIN_JSUMO_F_I,
 };
 
 //---------------------QRE1113--------------------
@@ -90,33 +95,38 @@ int Pines_JSUMO[2] = {
 
 unsigned int QREder = 0;
 unsigned int QREizq = 0;
-unsigned int BordeTatami = 500;  // Si ve lìnea blanca tende a 200
-unsigned int Tatami = 501;       // Si ve lo negro del tatami tende a 800
+unsigned int BordeTatami = 500; // Si ve línea blanca tende a 200
+unsigned int Tatami = 501;      // Si ve lo negro del tatami tende a 800
 
 int Pines_QRE[2] = {
-  PIN_QRE_DERECHO,
-  PIN_QRE_IZQUIERDO,
+    PIN_QRE_DERECHO,
+    PIN_QRE_IZQUIERDO,
 };
 
 //--------------------FUNCIONES-------------------
 
-void AsignacionPines() {
-  for (int idx = 0; idx < 7; idx++) {
+void AsignacionPines()
+{
+  for (int idx = 0; idx < 7; idx++)
+  {
     int pin = Pines_Motor[idx];
     pinMode(pin, OUTPUT);
   }
 
-  for (int idx = 0; idx < 3; idx++) {
+  for (int idx = 0; idx < 3; idx++)
+  {
     int pin = Pines_Sharps[idx];
     pinMode(pin, INPUT);
   }
 
-  for (int idx = 0; idx < 2; idx++) {
+  for (int idx = 0; idx < 2; idx++)
+  {
     int pin = Pines_QRE[idx];
     pinMode(pin, INPUT);
   }
 
-  for (int idx = 0; idx < 2; idx++) {
+  for (int idx = 0; idx < 2; idx++)
+  {
     int pin = Pines_JSUMO[idx];
     pinMode(pin, INPUT);
   }
@@ -124,7 +134,8 @@ void AsignacionPines() {
   digitalWrite(PIN_TRIG, LOW);
 }
 
-void EnviarPulso() {
+void EnviarPulso()
+{
   digitalWrite(PIN_TRIG, HIGH);
   delayMicroseconds(10);  //delay(60);
   digitalWrite(PIN_TRIG, LOW);
@@ -132,37 +143,38 @@ void EnviarPulso() {
   Distancia = Tiempo / 58;
 }
 
-void SensarSensores() {
+void SensarSensores()
+{
   QREder = analogRead(PIN_QRE_DERECHO);
   QREizq = analogRead(PIN_QRE_IZQUIERDO);
   JSUMO_izq = analogRead(PIN_JSUMO_F_I);
   JSUMO_der = analogRead(PIN_JSUMO_F_D);
 }
 
-void CincoSeg() {
-    digitalWrite(PIN_LED, HIGH);
-    delay(4990);
-    digitalWrite(PIN_LED, LOW);
-}
-
-void Menu() {
-  while (!digitalRead(PIN_PULSADOR)) {
+void Menu()
+{
+  while (!digitalRead(PIN_PULSADOR))
+  {
     tiempo++;
     Serial.println(tiempo);
   }
-  if (tiempo > tiempo_min && tiempo < tiempo_max) {
+  if (tiempo > tiempo_min && tiempo < tiempo_max)
+  {
     // cambiar estrategia
     caso++;
     tiempo = 0;
-    if (DEBUG_PULSADOR) Serial.print("Estas en: ");
-    if (DEBUG_PULSADOR) Serial.println(ESTADOS[caso]);
+    if (DEBUG_PULSADOR)Serial.print("Estas en: ");
+    if (DEBUG_PULSADOR)Serial.println(ESTADOS[caso]);
     pantalla = true;
-  } else if (tiempo > tiempo_max && pantalla == true) {
+  }
+  else if (tiempo > tiempo_max && pantalla == true)
+  {
     // entrar en el modo
-    if (DEBUG_PULSADOR) Serial.print("En ruedo: ");
-    if (DEBUG_PULSADOR) Serial.println(ESTADOS[caso]);
-    if (DEBUG_PULSADOR) Serial.print("Esperando 5 seg...");
-    CincoSeg();
+    if (DEBUG_PULSADOR)Serial.print("Esperando 5seg. Inicia en: ");
+    if (DEBUG_PULSADOR)Serial.println(ESTADOS[caso]);
+    digitalWrite(PIN_LED, HIGH);
+    delay(5000);
+    digitalWrite(PIN_LED, LOW);
     pantalla = false;
     Mode = true;
     tiempo = 0;
@@ -172,54 +184,80 @@ void Menu() {
 #include "Estrategias.h"
 
 //--------------------SETUP-------------------
-void setup() {
+void setup()
+{
   Serial.begin(9600);
   AsignacionPines();
   if (DEBUG_PULSADOR)
     Serial.print("Estas en: ");
   if (DEBUG_PULSADOR)
     Serial.println(ESTADOS[caso]);
-  EncenderLed();  // esto es para saber cuando el arduino termino de leer las líneas anteriores.
+  EncenderLed(); // esto es para saber cuando el arduino termino de leer las líneras anteriores a estas.
 }
 
 //--------------------LOOP-------------------
-void loop() {
+void loop()
+{
 
   Menu();
 
-  switch (caso) {
-    case Limpiar_Ruedas:
-      if (Mode == true) {
-        if (DEBUG_CASOS) Serial.println("EN RUEDO Limpiar Ruedas");
-        LimpiarRuedas();
-      }
-      break;
-    case Atacar_Derecha:
-      if (Mode == true) {
-        if (DEBUG_CASOS) Serial.println("EN RUEDO Atacar Derecha");
-        ATACARDERECHA();
-      }
-      break;
-    case Te_Espero:
-      if (Mode == true) {
-        if (DEBUG_CASOS) Serial.println("EN RUEDO Te Espero...");
-        TeEspero();
-      }
-      break;
-    case Atacar:
-      if (Mode == true) {
-        if (DEBUG_CASOS) Serial.println("EN RUEDO ATACAR");
-        ATACAR();
-      }
-      break;
-    case Te_Espero_Flags:
-      if (Mode == true) {
-        if (DEBUG_CASOS) Serial.println("EN RUEDO Te Espero con BANDERAS");
-        TeEsperoFlags();
-      }
-      break;
-    case 5:
-      caso = 0;
-      break;
+  switch (caso)
+  {
+  case Limpiar_Ruedas:
+    if (Mode == true)
+    {
+      if (DEBUG_CASOS)
+        Serial.println("EN RUEDO Limpiar Ruedas");
+      LimpiarRuedas();
+    }
+    break;
+  case Ataque_Derecha:
+    if (Mode == true)
+    {
+      if (DEBUG_CASOS)
+        Serial.println("EN RUEDO Ataque Derecha");
+      AtaqueDER();
+    }
+    break;
+  case Ataque_Izquierda:
+    if (Mode == true)
+    {
+      if (DEBUG_CASOS)
+        Serial.println("EN RUEDO Ataque Izquierda");
+      AtaqueIZQ();
+    }
+    break;
+  case Espero_Derecha:
+    if (Mode == true)
+    {
+      if (DEBUG_CASOS)
+        Serial.println("EN RUEDO Espero Derecha...");
+      EsperoDER();
+    }
+    break;
+  case Espero_Izquierda:
+    if (Mode == true)
+    {
+      if (DEBUG_CASOS)
+        Serial.println("EN RUEDO Espero Izquierda...");
+      EsperoIZQ();
+    }
+    break;
+  case Atacar:
+    if (Mode == true)
+    {
+      if (DEBUG_CASOS)
+        Serial.println("EN RUEDO Ataque");
+      Ataque();
+    }
+    break;
+  case Espero_Flags:
+    if (Mode == true)
+    {
+      if (DEBUG_CASOS)
+        Serial.println("EN RUEDO Espero con BANDERAS");
+      EsperoWithFlags();
+    }
+    break;
   }
 }
