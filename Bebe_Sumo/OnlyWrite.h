@@ -67,6 +67,18 @@ void MotorIzqGoLimpiar() {
   analogWrite(PWM_MOTOR_IZQ, VELOCIDAD_LIMPIAR);
 }
 
+void MotorDerBaLimpiar() {
+  digitalWrite(MOTOR_DER_1, HIGH);
+  digitalWrite(MOTOR_DER_2, LOW);
+  analogWrite(PWM_MOTOR_DER, VELOCIDAD_LIMPIAR);
+}
+
+void MotorIzqBaLimpiar() {
+  digitalWrite(MOTOR_IZQ_1, HIGH);
+  digitalWrite(MOTOR_IZQ_2, LOW);
+  analogWrite(PWM_MOTOR_IZQ, VELOCIDAD_LIMPIAR);
+}
+
 void MotorDerGoBuscar() {
   digitalWrite(MOTOR_DER_1, LOW);
   digitalWrite(MOTOR_DER_2, HIGH);
