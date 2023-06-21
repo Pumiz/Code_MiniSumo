@@ -9,9 +9,9 @@
 #define PIN_LED 13
 
 #define VELOCIDAD_BUSCAR 150
-#define VELOCIDAD_VER_FLAGS 175   //testar velocidad antes de establecer.
+#define VELOCIDAD_VER_FLAGS 175  //testar velocidad antes de establecer.
 #define VELOCIDAD_ATAQUE 255
-#define VELOCIDAD_GHIRAR 200
+#define VELOCIDAD_GHIRAR 230 // educir a 215 en caso de que con 11.1V gire muy rápido.
 #define VELOCIDAD_LIMPIAR 200
 #define VELOCIDAD_GHIRARSLOW 60
 
@@ -27,12 +27,14 @@
 #define PIN_QRE_DERECHO A1
 #define PIN_QRE_IZQUIERDO A0
 
-unsigned long tiempo_acorralar_anterior = 30000;
-unsigned long tiempo_acorralar_actual = 0;
+unsigned long Tiempo_acorralar_anterior = 30000;
+unsigned long Tiempo_acorralar_actual = 0;
 int caso = 0;
-unsigned int tiempo = 0;
-unsigned long tiempo_max = 200; //aprox es un 1seg.
-unsigned int tiempo_min = 20;
-bool pantalla = true;
+unsigned int Tiempo = 0;
+unsigned long Tiempo_Max = 160;  //aprox es 1seg.
+unsigned int Tiempo_Min = 20;
+bool Pantalla = true;
 bool Mode = false;
 bool EneableFlags = true;
+int Hielo = 1; 
+int Oponente = 0;
