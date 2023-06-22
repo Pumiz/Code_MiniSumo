@@ -10,7 +10,7 @@
 #define DEBUG_CASOS 0       //Debug despues de los 5 segundos.
 #define DEBUG_ULTRASONIDO 0
 #define DEBUG_SHARP 0
-#define DEBUG_Error404 0
+#define DEBUG_Error404 1
 
 
 //-------------------MOTORES---------------------
@@ -32,8 +32,9 @@ enum Modo {
   Ataque_Izquierda,
   Espero_Derecha,
   Espero_Izquierda,
+  Rapido_Derecha,
+  Rapido_Izquierda,
   Deslizo,
-  Atacar,
   Espero_Flags
 };
 
@@ -43,8 +44,9 @@ String ESTADOS[] = {
   "Ataque_Izquierda",
   "Espero_Derecha",
   "Espero_Izquierda",
+  "Rapido_Derecha",
+  "Rapido_Izquierda",
   "Deslizo",
-  "Atacar",
   "Espero_Flags",
 };
 
@@ -101,7 +103,7 @@ int Pines_JSUMO[2] = {
 
 unsigned int QREder = 0;
 unsigned int QREizq = 0;
-unsigned int Tatami = 501;  // Si ve línea blanca tende a 200. Si ve lo negro del tatami tende a 800
+unsigned int BordeTatami = 720;  // Si ve línea blanca tende de 200 a 720     Si ve lo negro tende de 800 a 1000
 
 int Pines_QRE[2] = {
   PIN_QRE_DERECHO,
@@ -247,18 +249,25 @@ void loop() {
         EsperoIZQ();
       }
       break;
+    case Rapido_Derecha:
+      if (Mode == true) {
+        if (DEBUG_CASOS)
+          Serial.println("EN RUEDO Rapido Derecha");
+        RapidoDerecha();
+      }
+      break;
+    case Rapido_Izquierda:
+      if (Mode == true) {
+        if (DEBUG_CASOS)
+          Serial.println("EN RUEDO Rapido Izquierda");
+        RapidoIzquierda();
+      }
+      break;
     case Deslizo:
       if (Mode == true) {
         if (DEBUG_CASOS)
           Serial.println("EN RUEDO Deslizar");
         Deslizar();
-      }
-      break;
-    case Atacar:
-      if (Mode == true) {
-        if (DEBUG_CASOS)
-          Serial.println("EN RUEDO Ataque");
-        Ataque();
       }
       break;
     case Espero_Flags:
