@@ -11,7 +11,8 @@
 #define VELOCIDAD_BUSCAR 150
 #define VELOCIDAD_VER_FLAGS 175  //testar velocidad antes de establecer.
 #define VELOCIDAD_ATAQUE 255
-#define VELOCIDAD_GHIRAR 230 // educir a 215 en caso de que con 11.1V gire muy rápido.
+#define VELOCIDAD_ATAQUERAPIDO 255
+#define VELOCIDAD_GHIRAR 230 // Reducir a 215 en caso de que con 11.1V gire muy rápido.
 #define VELOCIDAD_LIMPIAR 200
 #define VELOCIDAD_GHIRARSLOW 60
 
@@ -24,10 +25,10 @@
 #define PIN_JSUMO_F_D A7
 #define PIN_JSUMO_F_I A4
 
-#define PIN_QRE_DERECHO A1
-#define PIN_QRE_IZQUIERDO A0
+#define PIN_QRE_DERECHO A0
+#define PIN_QRE_IZQUIERDO A1
 
-unsigned long Tiempo_acorralar_anterior = 30000;
+unsigned long Tiempo_acorralar_anterior = 25000;
 unsigned long Tiempo_acorralar_actual = 0;
 int caso = 0;
 unsigned int Tiempo = 0;
