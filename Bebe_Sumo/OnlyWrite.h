@@ -92,6 +92,32 @@ void MotorIzqGoBuscar() {
   analogWrite(PWM_MOTOR_IZQ, VELOCIDAD_BUSCAR);
 }
 
+void MotorDerGoRAPIDO() {
+  digitalWrite(MOTOR_DER_1, LOW);
+  digitalWrite(MOTOR_DER_2, HIGH);
+  analogWrite(PWM_MOTOR_DER, VELOCIDAD_ATAQUERAPIDO);
+}
+
+void MotorIzqGoRAPIDO() {
+  digitalWrite(MOTOR_IZQ_1, LOW);
+  digitalWrite(MOTOR_IZQ_2, HIGH);
+  analogWrite(PWM_MOTOR_IZQ, VELOCIDAD_ATAQUERAPIDO);
+}
+
+void MotorDerBaRAPIDO() {
+  digitalWrite(MOTOR_DER_1, HIGH);
+  digitalWrite(MOTOR_DER_2, LOW);
+  analogWrite(PWM_MOTOR_DER, VELOCIDAD_ATAQUERAPIDO);
+}
+
+
+void MotorIzqBaRAPIDO() {
+  digitalWrite(MOTOR_IZQ_1, HIGH);
+  digitalWrite(MOTOR_IZQ_2, LOW);
+  analogWrite(PWM_MOTOR_IZQ, VELOCIDAD_ATAQUERAPIDO);
+}
+
+
 void MotorDerGoGhirar() {
   digitalWrite(MOTOR_DER_1, LOW);
   digitalWrite(MOTOR_DER_2, HIGH);
