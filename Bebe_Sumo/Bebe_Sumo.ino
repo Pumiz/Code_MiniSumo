@@ -6,11 +6,11 @@
 #include "Define.h"
 #include "OnlyWrite.h"
 #define DEBUG_PULSADOR 1    // con DEBUG en 0 NO muestra SerialPrint´s
-#define DEBUG_ESTRATEGIA 1  // Debug para saber en que if cae en cada estrategia.
+#define DEBUG_ESTRATEGIA 0  // Debug para saber en que if cae en cada estrategia.
 #define DEBUG_CASOS 0       //Debug despues de los 5 segundos.
 #define DEBUG_ULTRASONIDO 0
 #define DEBUG_SHARP 0
-#define DEBUG_Error404 1
+#define DEBUG_Error404 0
 
 
 //-------------------MOTORES---------------------
@@ -138,7 +138,7 @@ void AsignacionPines() {
 
 void EnviarPulso() {
   digitalWrite(PIN_TRIG, HIGH);
-  delayMicroseconds(10);  //delay(60);
+  delay(60);
   digitalWrite(PIN_TRIG, LOW);
   Tiempo_Ultra = pulseIn(PIN_ECHO, HIGH);
   Distancia = Tiempo_Ultra / 58;
