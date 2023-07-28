@@ -37,5 +37,6 @@ unsigned int Tiempo_Min = 20;
 bool Pantalla = true;
 bool Mode = false;
 bool EneableFlags = true;
+bool Visado = false;
 int Hielo = 1; 
 int Oponente = 0;
