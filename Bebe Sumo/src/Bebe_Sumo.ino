@@ -139,7 +139,7 @@ void AsignacionPines() {
 
 void EnviarPulso() {
   digitalWrite(PIN_TRIG, HIGH);
-  delay(60);
+  delay(10);
   digitalWrite(PIN_TRIG, LOW);
   Tiempo_Ultra = pulseIn(PIN_ECHO, HIGH);
   Distancia = Tiempo_Ultra / 58;
