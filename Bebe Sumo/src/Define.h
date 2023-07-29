@@ -11,7 +11,7 @@
 #define VELOCIDAD_BUSCAR 150
 #define VELOCIDAD_VER_FLAGS 175  //testar velocidad antes de establecer.
 #define VELOCIDAD_ATAQUE 255
-#define VELOCIDAD_ATAQUERAPIDO 255
+#define VELOCIDAD_ATAQUERAPIDO 180
 #define VELOCIDAD_GHIRAR 230 // Reducir a 215 en caso de que con 11.1V gire muy rápido.
 #define VELOCIDAD_LIMPIAR 200
 #define VELOCIDAD_GHIRARSLOW 60
@@ -38,5 +38,6 @@ bool Pantalla = true;
 bool Mode = false;
 bool EneableFlags = true;
 bool Visado = false;
+bool Ataque_Derecho = false;
 int Hielo = 1; 
 int Oponente = 0;
