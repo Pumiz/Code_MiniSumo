@@ -197,7 +197,13 @@ void Menu() {
     if (DEBUG_PULSADOR)
       Serial.println(ESTADOS[caso]);
     digitalWrite(PIN_LED, HIGH);
-    delay(4990);
+
+    if (caso == Limpiar_Ruedas) {
+      delay(100);
+    } else {
+      delay(4990);
+    }
+
     digitalWrite(PIN_LED, LOW);
     Pantalla = false;
     Mode = true;
