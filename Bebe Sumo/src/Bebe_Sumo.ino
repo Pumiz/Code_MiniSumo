@@ -6,6 +6,7 @@
 #define DEBUG_CASOS 0      // Debug despues de los 5 segundos.
 #define DEBUG_ULTRASONIDO 0
 #define DEBUG_SHARP 0
+#define ENEABLE_QRE 0 // 1 permitido, 0 no permitido
 
 int Pines_Salida[2] = {
     PIN_TRIG,
@@ -124,12 +125,12 @@ void AsignacionPines() {
     pinMode(pin, INPUT);
   }
 
-  for (int idx = 0; idx < 2; idx++) {
+  for (int idx = 0; idx < 3; idx++) {
     int pin = Pines_Entrada[idx];
     pinMode(pin, INPUT);
   }
 
-  for (int idx = 0; idx < 2; idx++) {
+  for (int idx = 0; idx < 3; idx++) {
     int pin = Pines_Salida[idx];
     pinMode(pin, OUTPUT);
   }
