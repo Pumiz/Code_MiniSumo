@@ -7,30 +7,6 @@ void EncenderLed() {
   delay(250);
 }
 
-/*void SensarQRE()
-{
-
-    if (QREizq < BordeTatami || QREder < BordeTatami)
-    {
-        digitalWrite(MOTOR_DER_1, LOW);
-        digitalWrite(MOTOR_DER_2, HIGH);
-        analogWrite(PWM_MOTOR_DER, VELOCIDAD_BUSCAR);
-        digitalWrite(MOTOR_IZQ_1, HIGH);
-        digitalWrite(MOTOR_IZQ_2, LOW);
-        analogWrite(PWM_MOTOR_IZQ, VELOCIDAD_BUSCAR);
-        delay(300);
-        digitalWrite(MOTOR_DER_1, LOW);
-        digitalWrite(MOTOR_DER_2, HIGH);
-        analogWrite(PWM_MOTOR_DER, VELOCIDAD_BUSCAR);
-        digitalWrite(MOTOR_IZQ_1, LOW);
-        digitalWrite(MOTOR_IZQ_2, HIGH);
-        analogWrite(PWM_MOTOR_IZQ, VELOCIDAD_BUSCAR);
-
-        if (DEBUG)Serial.println("Me caigo weon");
-    }
-}
-*/
-
 void MotorDerStop() {
   digitalWrite(MOTOR_DER_1, LOW);
   digitalWrite(MOTOR_DER_2, LOW);
