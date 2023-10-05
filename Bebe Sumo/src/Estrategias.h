@@ -4,7 +4,7 @@ void LimpiarRuedas() {
   MotorDerGoLimpiar();
   MotorIzqGoLimpiar();
   if (DEBUG_ESTRATEGIA)
-    Serial.println("");
+    Serial.println("Limpiando ruedas");
 }
 
 //--------------------Ataque Derecha--------------------         10/10 Corregir
@@ -15,171 +15,154 @@ void AtaqueDER() {
   LeerSharp();
   // DetectarErrores();
 
-  if (JSUMO_der > Rival && Distancia < 18 && JSUMO_izq > Rival) {
+  if (JSUMO_der > Rival && Distancia < 18 &&
+      JSUMO_izq > Rival) { // Ven los 3 sensores
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
       Serial.println("Atacar");
   }
 
-  if (Distancia > 0 && Distancia < 60) {
+  if (Distancia > 0 && Distancia < 60) { // Solo ultrasonido
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("Atacar");
+      Serial.println("Atacar2");
   } else {
-    MotorDerGoGhirar();
-    MotorIzqStop();
+    MotorDerStop(); // Busco hacia la derecha
+    MotorIzqGoGhirar();
     if (DEBUG_ESTRATEGIA)
       Serial.println("Buscar");
   }
 
-  /*   if (Distancia > 20 && SHARP_izq > RivalSharp) {
-    MotorDerGoGhirar();
-    MotorIzqStop();
-    if (DEBUG_ESTRATEGIA) Serial.println("Buscar");
-  } */
-
-  if (JSUMO_der > Rival && Distancia > 19) {
+  if (JSUMO_izq > Rival && Distancia > 19) { // Jsumo izquierdo y ultrasonido
     MotorDerGoGhirar();
     MotorIzqBaGhirar();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("JSUMO: LATERAL DERECHA");
-  }
-
-  if (JSUMO_der > Rival && Distancia < 19) {
-    MotorDerGoATAQUE();
-    MotorIzqGoATAQUE();
-    if (DEBUG_ESTRATEGIA)
-      Serial.println("Atacar 4");
-  }
-
-  if (JSUMO_izq > Rival && Distancia > 10) {
-    MotorDerBaGhirar();
-    MotorIzqGoGhirar();
-    if (DEBUG_ESTRATEGIA)
       Serial.println("JSUMO: LATERAL IZQUIERDA");
-  }
-
-    if (JSUMO_izq > Rival && Distancia < 19) {
+  } else if (JSUMO_izq > Rival && Distancia < 19) {
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
       Serial.println("Atacar 3");
   }
 
-  if (SHARP_izq < RivalSharp && SHARP_izq > 0) {
-    MotorDerStop();
+  if (JSUMO_der > Rival && Distancia > 19) { // Jsumo derecho y ultrasonido
+    MotorDerBaGhirar();
     MotorIzqGoGhirar();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("SHARP: Rival a la IZQUIERDA");
-    delay(200);
+      Serial.println("JSUMO: LATERAL DERECHA");
+  } else if (JSUMO_der > Rival && Distancia < 19) {
+    MotorDerGoATAQUE();
+    MotorIzqGoATAQUE();
+    if (DEBUG_ESTRATEGIA)
+      Serial.println("Atacar 4");
   }
 
-  if (SHARP_der < RivalSharp && SHARP_der > 0) {
-    MotorDerGoGhirar();
-    MotorIzqStop();
+  if (SHARP_der > 0 && SHARP_der < RivalSharp) { // Sharp derecho
+    MotorDerStop();
+    MotorIzqGoGhirar();
     if (DEBUG_ESTRATEGIA)
       Serial.println("SHARP: Rival a la DERECHA");
   }
 
-  if (QREder < BordeTatami || QREizq < BordeTatami) {
+  if (SHARP_izq > 0 && SHARP_izq < RivalSharp) { // Sharp izquierdo
+    MotorDerGoGhirar();
+    MotorIzqStop();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("Me caigo weon");
-    MotorDerBaLimpiar();
-    MotorIzqBaLimpiar();
-    delay(300);
-    MotorDerGoLimpiar();
-    MotorIzqBaLimpiar();
-    delay(300);
+      Serial.println("SHARP: Rival a la IZQUIERDA");
+  }
+
+  if (ENEABLE_QRE) { // QRE
+    if (QREder < BordeTatami || QREizq < BordeTatami) {
+      if (DEBUG_ESTRATEGIA)
+        Serial.println("Me caigo weon");
+      MotorDerBaLimpiar();
+      MotorIzqBaLimpiar();
+      delay(300);
+      MotorDerGoLimpiar();
+      MotorIzqBaLimpiar();
+      delay(300);
+    }
   }
 }
 
 //-------------------Ataque Izquierda-------------------         10/10 Corregir
-// mejor el giro del sharp para el contrario al que busca.
 void AtaqueIZQ() {
   EnviarPulso();
   SensarSensores();
   LeerSharp();
   // DetectarErrores();
 
-  if (JSUMO_der > Rival && Distancia < 18 && JSUMO_izq > Rival) {
+  if (JSUMO_der > Rival && Distancia < 18 &&
+      JSUMO_izq > Rival) { // Ven los 3 sensores
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
       Serial.println("Atacar");
   }
 
-  if (Distancia > 0 && Distancia < 60) {
+  if (Distancia > 0 && Distancia < 60) { // Solo ultrasonido
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("Atacar");
+      Serial.println("Atacar2");
   } else {
-    MotorDerStop();
-    MotorIzqGoGhirar();
+    MotorDerGoGhirar(); // Busco hacia la izquierda
+    MotorIzqStop();
     if (DEBUG_ESTRATEGIA)
       Serial.println("Buscar");
   }
 
-  /*   if (Distancia > 20 && SHARP_izq > RivalSharp) {
-    MotorDerGoGhirar();
-    MotorIzqStop();
-    if (DEBUG_ESTRATEGIA) Serial.println("Buscar");
-  } */
-
-  if (JSUMO_der > Rival && Distancia > 19) {
+  if (JSUMO_izq > Rival && Distancia > 19) { // Jsumo izquierdo y ultrasonido
     MotorDerGoGhirar();
     MotorIzqBaGhirar();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("JSUMO: LATERAL DERECHA");
-  }
-
-  if (JSUMO_der > Rival && Distancia < 19) {
-    MotorDerGoATAQUE();
-    MotorIzqGoATAQUE();
-    if (DEBUG_ESTRATEGIA)
-      Serial.println("Atacar 4");
-  }
-
-  if (JSUMO_izq > Rival && Distancia > 19) {
-    MotorDerBaGhirarSlow();
-    MotorIzqGoGhirar();
-    if (DEBUG_ESTRATEGIA)
       Serial.println("JSUMO: LATERAL IZQUIERDA");
-  }
-
-    if (JSUMO_izq > Rival && Distancia < 19) {
+  } else if (JSUMO_izq > Rival && Distancia < 19) {
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
       Serial.println("Atacar 3");
   }
 
-  if (SHARP_izq < RivalSharp && SHARP_izq > 0) {
-    MotorDerStop();
+  if (JSUMO_der > Rival && Distancia > 19) { // Jsumo derecho y ultrasonido
+    MotorDerBaGhirar();
     MotorIzqGoGhirar();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("SHARP: Rival a la IZQUIERDA");
-    delay(200);
+      Serial.println("JSUMO: LATERAL DERECHA");
+  } else if (JSUMO_der > Rival && Distancia < 19) {
+    MotorDerGoATAQUE();
+    MotorIzqGoATAQUE();
+    if (DEBUG_ESTRATEGIA)
+      Serial.println("Atacar 4");
   }
 
-  if (SHARP_der < RivalSharp && SHARP_der > 0) {
-    MotorDerGoGhirar();
-    MotorIzqStop();
+  if (SHARP_der > 0 && SHARP_der < RivalSharp) { // Sharp derecho
+    MotorDerStop();
+    MotorIzqGoGhirar();
     if (DEBUG_ESTRATEGIA)
       Serial.println("SHARP: Rival a la DERECHA");
   }
 
-  if (QREder < BordeTatami || QREizq < BordeTatami) {
+  if (SHARP_izq > 0 && SHARP_izq < RivalSharp) { // Sharp izquierdo
+    MotorDerGoGhirar();
+    MotorIzqStop();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("Me caigo weon");
-    MotorDerBaLimpiar();
-    MotorIzqBaLimpiar();
-    delay(300);
-    MotorDerGoLimpiar();
-    MotorIzqBaLimpiar();
-    delay(300);
+      Serial.println("SHARP: Rival a la IZQUIERDA");
+  }
+
+  if (ENEABLE_QRE) { // QRE
+    if (QREder < BordeTatami || QREizq < BordeTatami) {
+      if (DEBUG_ESTRATEGIA)
+        Serial.println("Me caigo weon");
+      MotorDerBaLimpiar();
+      MotorIzqBaLimpiar();
+      delay(300);
+      MotorDerGoLimpiar();
+      MotorIzqBaLimpiar();
+      delay(300);
+    }
   }
 }
 
@@ -199,8 +182,8 @@ void EsperoDER() {
     Tiempo_acorralar_actual = millis();
   } else {
     Visado = false;
-    MotorDerGoGhirar();
-    MotorIzqStop();
+    MotorDerStop();
+    MotorIzqGoGhirar();
     if (DEBUG_ESTRATEGIA)
       Serial.println("Buscar");
   }
@@ -214,73 +197,75 @@ void EsperoDER() {
 
   if (JSUMO_der > Rival) {
     Visado = true;
+    MotorDerBaGhirarSlow();
+    MotorIzqGoGhirarSlow();
+    Tiempo_acorralar_anterior = Tiempo_acorralar_actual + 3000;
+    if (DEBUG_ESTRATEGIA)
+      Serial.println("Te vas a la DERECHA");
+  }
+
+  if (JSUMO_izq > Rival) {
+    Visado = true;
     MotorDerGoGhirarSlow();
     MotorIzqBaGhirarSlow();
     Tiempo_acorralar_anterior = Tiempo_acorralar_actual + 3000;
     if (DEBUG_ESTRATEGIA)
-      Serial.println("Te vas a la DERECHA");
+      Serial.println("Te vas a la IZQUIERDA");
   }
 
   if (JSUMO_der > Rival && Distancia < 19) {
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("Atacar 4");
-  }
-
-  if (JSUMO_izq > Rival) {
-    Visado = true;
-    MotorDerBaGhirarSlow();
-    MotorIzqGoGhirarSlow();
-    Tiempo_acorralar_anterior = Tiempo_acorralar_actual + 3000;
-    if (DEBUG_ESTRATEGIA)
-      Serial.println("Te vas a la IZQUIERDA");
+      Serial.println("Atacar 1");
   }
 
   if (JSUMO_izq > Rival && Distancia < 19) {
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("Atacar 3");
+      Serial.println("Atacar 2");
   }
 
   if (JSUMO_izq > Rival && Distancia < 30 && JSUMO_der > Rival) {
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("ATACAR 1");
+      Serial.println("ATACAR 3");
   }
 
   if (Distancia < 19 && Distancia > 0) {
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("ATACAR 2");
+      Serial.println("ATACAR 4");
   }
 
-  if (SHARP_izq < RivalSharp && SHARP_izq > 0) {
-    MotorDerBaGhirar();
-    MotorIzqGoGhirar();
+  if (SHARP_izq > 0 && SHARP_izq < RivalSharp) {
+    MotorDerGoGhirar();
+    MotorIzqBaGhirar();
     if (DEBUG_ESTRATEGIA)
       Serial.println("SHARP: Rival a la IZQUIERDA");
   }
 
-  if (SHARP_der < RivalSharp && SHARP_der > 0) {
-    MotorDerGoGhirar();
-    MotorIzqBaGhirar();
+  if (SHARP_der > 0 && SHARP_der < RivalSharp) {
+    MotorDerBaGhirar();
+    MotorIzqGoGhirar();
     if (DEBUG_ESTRATEGIA)
       Serial.println("SHARP: Rival a la DERECHA");
   }
 
-  if (QREder < BordeTatami || QREizq < BordeTatami) {
-    if (DEBUG_ESTRATEGIA)
-      Serial.println("Me caigo weon");
-    MotorDerBaLimpiar();
-    MotorIzqBaLimpiar();
-    delay(300);
-    MotorDerGoLimpiar();
-    MotorIzqBaLimpiar();
-    delay(300);
+  if (ENEABLE_QRE) { // QRE
+    if (QREder < BordeTatami || QREizq < BordeTatami) {
+      if (DEBUG_ESTRATEGIA)
+        Serial.println("Me caigo weon");
+      MotorDerBaLimpiar();
+      MotorIzqBaLimpiar();
+      delay(300);
+      MotorDerGoLimpiar();
+      MotorIzqBaLimpiar();
+      delay(300);
+    }
   }
 }
 
@@ -300,8 +285,8 @@ void EsperoIZQ() {
     Tiempo_acorralar_actual = millis();
   } else {
     Visado = false;
-    MotorDerStop();
-    MotorIzqGoGhirar();
+    MotorDerGoGhirar();
+    MotorIzqStop();
     if (DEBUG_ESTRATEGIA)
       Serial.println("Buscar");
   }
@@ -315,80 +300,82 @@ void EsperoIZQ() {
 
   if (JSUMO_der > Rival) {
     Visado = true;
+    MotorDerBaGhirarSlow();
+    MotorIzqGoGhirarSlow();
+    Tiempo_acorralar_anterior = Tiempo_acorralar_actual + 3000;
+    if (DEBUG_ESTRATEGIA)
+      Serial.println("Te vas a la DERECHA");
+  }
+
+  if (JSUMO_izq > Rival) {
+    Visado = true;
     MotorDerGoGhirarSlow();
     MotorIzqBaGhirarSlow();
     Tiempo_acorralar_anterior = Tiempo_acorralar_actual + 3000;
     if (DEBUG_ESTRATEGIA)
-      Serial.println("Te vas a la DERECHA");
+      Serial.println("Te vas a la IZQUIERDA");
   }
 
   if (JSUMO_der > Rival && Distancia < 19) {
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("Atacar 4");
-  }
-
-  if (JSUMO_izq > Rival) {
-    Visado = true;
-    MotorDerBaGhirarSlow();
-    MotorIzqGoGhirarSlow();
-    Tiempo_acorralar_anterior = Tiempo_acorralar_actual + 3000;
-    if (DEBUG_ESTRATEGIA)
-      Serial.println("Te vas a la IZQUIERDA");
+      Serial.println("Atacar 1");
   }
 
   if (JSUMO_izq > Rival && Distancia < 19) {
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("Atacar 3");
+      Serial.println("Atacar 2");
   }
 
   if (JSUMO_izq > Rival && Distancia < 30 && JSUMO_der > Rival) {
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("ATACAR 1");
+      Serial.println("ATACAR 3");
   }
 
   if (Distancia < 19 && Distancia > 0) {
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
-      Serial.println("ATACAR 2");
+      Serial.println("ATACAR 4");
   }
 
-  if (SHARP_izq < RivalSharp && SHARP_izq > 0) {
-    MotorDerBaGhirar();
-    MotorIzqGoGhirar();
+  if (SHARP_izq > 0 && SHARP_izq < RivalSharp) {
+    MotorDerGoGhirar();
+    MotorIzqBaGhirar();
     if (DEBUG_ESTRATEGIA)
       Serial.println("SHARP: Rival a la IZQUIERDA");
   }
 
-  if (SHARP_der < RivalSharp && SHARP_der > 0) {
-    MotorDerGoGhirar();
-    MotorIzqBaGhirar();
+  if (SHARP_der > 0 && SHARP_der < RivalSharp) {
+    MotorDerBaGhirar();
+    MotorIzqGoGhirar();
     if (DEBUG_ESTRATEGIA)
       Serial.println("SHARP: Rival a la DERECHA");
   }
 
-  if (QREder < BordeTatami || QREizq < BordeTatami) {
-    if (DEBUG_ESTRATEGIA)
-      Serial.println("Me caigo weon");
-    MotorDerBaLimpiar();
-    MotorIzqBaLimpiar();
-    delay(300);
-    MotorDerGoLimpiar();
-    MotorIzqBaLimpiar();
-    delay(300);
+  if (ENEABLE_QRE) { // QRE
+    if (QREder < BordeTatami || QREizq < BordeTatami) {
+      if (DEBUG_ESTRATEGIA)
+        Serial.println("Me caigo weon");
+      MotorDerBaLimpiar();
+      MotorIzqBaLimpiar();
+      delay(300);
+      MotorDerGoLimpiar();
+      MotorIzqBaLimpiar();
+      delay(300);
+    }
   }
 }
 
 //--------------------Rapido Derecha--------------------         10/10 Success
 void RapidoDerecha() {
-  SensarSensores();
   EnviarPulso();
+  SensarSensores();
   LeerSharp();
   // DetectarErrores();
 
@@ -399,13 +386,13 @@ void RapidoDerecha() {
       Serial.println("SHARP: Rival a la DERECHA");
   }
 
-  if (Distancia > 35) {
-    MotorDerGoRAPIDO();
-    MotorIzqBaRAPIDO();
+  if (Distancia > 50) {
+    MotorDerBaRAPIDO();
+    MotorIzqGoRAPIDO();
     if (DEBUG_ESTRATEGIA)
       Serial.println("Buscar");
   }
-  if (Distancia < 35 && Distancia > 0) {
+  if (Distancia > 0 && Distancia < 35) {
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
@@ -413,68 +400,46 @@ void RapidoDerecha() {
   }
 
   if (JSUMO_izq > Rival && Distancia < 35) {
-    Ataque_Derecho = true;
     MotorDerGoATAQUE();
-    MotorIzqGoATAQUE();
-    if (DEBUG_ESTRATEGIA)
-      Serial.println("Atacar 2");
-    Ataque_Derecho = false;
-  }
-
-  if (JSUMO_izq > Rival && Ataque_Derecho == true) {
-    MotorDerGoGhirar();
-    MotorIzqBaGhirar();
+    MotorIzqGoRAPIDO();
     if (DEBUG_ESTRATEGIA)
       Serial.println("Te vas a la IZQUIERDA");
   }
-
-  /*   if (JSUMO_izq > Rival) {
-      MotorDerBaGhirar();
-      MotorIzqGoGhirar();
-      if (DEBUG_ESTRATEGIA)
-        Serial.println("Te vas a la IZQUIERDA");
-    } */
 }
 
 //-------------------Rapido Izquierda-------------------         10/10 Success
 void RapidoIzquierda() {
-  SensarSensores();
   EnviarPulso();
+  SensarSensores();
   LeerSharp();
   // DetectarErrores();
 
   if (SHARP_izq < RivalSharp) {
-    MotorDerBaRAPIDO();
-    MotorIzqGoRAPIDO();
+    MotorDerGoRAPIDO();
+    MotorIzqBaRAPIDO();
     if (DEBUG_ESTRATEGIA)
       Serial.println("SHARP: Rival a la IZQUIERDA");
   }
 
-  if (Distancia > 35) {
-    MotorDerBaRAPIDO();
-    MotorIzqGoRAPIDO();
+  if (Distancia > 50) {
+    MotorDerGoRAPIDO();
+    MotorIzqBaRAPIDO();
     if (DEBUG_ESTRATEGIA)
       Serial.println("Buscar");
   }
-  if (Distancia < 35 && Distancia > 0) {
+  if (Distancia > 0 && Distancia < 35) {
     MotorDerGoATAQUE();
     MotorIzqGoATAQUE();
     if (DEBUG_ESTRATEGIA)
       Serial.println("Atacar");
   }
 
-  /*   if (JSUMO_der > Rival) {
-    MotorDerGoGhirarSlow();
-    MotorIzqBaGhirarSlow();
-    if (DEBUG_ESTRATEGIA) Serial.println("Te vas a la DERECHA");
-  } */
-
-  /*   if (JSUMO_izq > Rival) {
-      MotorDerBaGhirar();
-      MotorIzqGoGhirar();
-      if (DEBUG_ESTRATEGIA)
-        Serial.println("Te vas a la IZQUIERDA");
-    } */
+  if (JSUMO_der > Rival && Distancia < 35) {
+    MotorDerGoRAPIDO();
+    MotorIzqGoATAQUE();
+    if (DEBUG_ESTRATEGIA)
+      Serial.println("Te vas a la DERECHA");
+  }
 }
 
 //-----------------------Deslizar-----------------------         A TESTEAR
