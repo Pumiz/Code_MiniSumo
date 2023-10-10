@@ -6,7 +6,7 @@
 #define DEBUG_CASOS 0      // Debug despues de los 5 segundos.
 #define DEBUG_ULTRASONIDO 0
 #define DEBUG_SHARP 0
-#define ENEABLE_QRE 0 // 1 permitido, 0 no permitido
+#define ENEABLE_QRE 1 // 1 permitido, 0 no permitido
 
 int Pines_Salida[2] = {
     PIN_TRIG,
@@ -19,7 +19,7 @@ int Pines_Entrada[2] = {
 };
 
 //-------------------MOTORES---------------------
-int Pines_Motor[8] = {
+int Pines_Motor[6] = {
     MOTOR_DER_1, MOTOR_DER_2,   MOTOR_IZQ_1,
     MOTOR_IZQ_2, PWM_MOTOR_DER, PWM_MOTOR_IZQ,
 };
@@ -56,6 +56,9 @@ long Distancia;
 // ROSA:     SEÑAL
 // AMARILLO: GND
 // CELESTE:  VCC
+
+int SharpDerValue;
+int SharpIzqValue;
 
 float SHARP_der;
 float SHARP_izq;
@@ -94,7 +97,7 @@ int Pines_JSUMO[2] = {
 
 unsigned int QREder = 0;
 unsigned int QREizq = 0;
-unsigned int BordeTatami = 720; // Si ve línea blanca tende de 200 a 720     Si
+unsigned int BordeTatami = 300; // Si ve línea blanca tende de 20 a 300     Si
                                 // ve lo negro tende de 800 a 1000
 
 int Pines_QRE[2] = {
@@ -105,12 +108,12 @@ int Pines_QRE[2] = {
 //--------------------FUNCIONES-------------------
 
 void AsignacionPines() {
-  for (int idx = 0; idx < 7; idx++) {
+  for (int idx = 0; idx < 6; idx++) {
     int pin = Pines_Motor[idx];
     pinMode(pin, OUTPUT);
   }
 
-  for (int idx = 0; idx < 3; idx++) {
+  for (int idx = 0; idx < 2; idx++) {
     int pin = Pines_Sharps[idx];
     pinMode(pin, INPUT);
   }
@@ -125,12 +128,12 @@ void AsignacionPines() {
     pinMode(pin, INPUT);
   }
 
-  for (int idx = 0; idx < 3; idx++) {
+  for (int idx = 0; idx < 2; idx++) {
     int pin = Pines_Entrada[idx];
     pinMode(pin, INPUT);
   }
 
-  for (int idx = 0; idx < 3; idx++) {
+  for (int idx = 0; idx < 2; idx++) {
     int pin = Pines_Salida[idx];
     pinMode(pin, OUTPUT);
   }
@@ -148,33 +151,14 @@ void EnviarPulso() {
     Serial.println(Distancia);
 }
 
-void LeerSharp() {
-  int analogValueDer = analogRead(PIN_SHARP_DER);
-  float voltageDer = analogValueDer / 1024. * 5;
-  float resistenciaDer = 2000 * voltageDer / (1 - voltageDer / 5);
-  SHARP_der = pow(50 * 1e3 * pow(10, 0.7) / resistenciaDer, (1 / 0.7));
-  SHARP_der = SHARP_der / 10;
-
-  int analogValue = analogRead(PIN_SHARP_IZQ);
-  float voltage = analogValue / 1024. * 5;
-  float resistencia = 2000 * voltage / (1 - voltage / 5);
-  SHARP_izq = pow(50 * 1e3 * pow(10, 0.7) / resistencia, (1 / 0.7));
-  SHARP_izq = SHARP_izq / 10;
-
-  if (DEBUG_SHARP)
-    Serial.print("Sharp: ");
-  if (DEBUG_SHARP)
-    Serial.print(SHARP_izq); //  <------- imprime el valor en centímetros del
-                             //  sensor deseado.
-  if (DEBUG_SHARP)
-    Serial.println(" cm");
-}
 
 void SensarSensores() {
   QREder = analogRead(PIN_QRE_DERECHO);
   QREizq = analogRead(PIN_QRE_IZQUIERDO);
   JSUMO_izq = analogRead(PIN_JSUMO_F_I);
   JSUMO_der = analogRead(PIN_JSUMO_F_D);
+  SharpDerValue = analogRead(PIN_SHARP_DER);
+  SharpIzqValue = analogRead(PIN_SHARP_IZQ);
 }
 
 void Menu() {
@@ -211,6 +195,7 @@ void Menu() {
     Tiempo = 0;
   }
 }
+
 #include "Error404.h"
 #include "Estrategias.h"
 
