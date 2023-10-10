@@ -1,7 +1,7 @@
-#define MOTOR_DER_1 6
-#define MOTOR_DER_2 5
-#define MOTOR_IZQ_1 7
-#define MOTOR_IZQ_2 8
+#define MOTOR_DER_1 5
+#define MOTOR_DER_2 6
+#define MOTOR_IZQ_1 8
+#define MOTOR_IZQ_2 7
 #define PWM_MOTOR_DER 3
 #define PWM_MOTOR_IZQ 11
 
