@@ -1,3 +1,4 @@
+#include "Sharp.h"
 
 //-------------------LIMPIAR RUEDAS---------------------
 void LimpiarRuedas() {
@@ -12,7 +13,7 @@ void LimpiarRuedas() {
 void AtaqueDER() {
   EnviarPulso();
   SensarSensores();
-  LeerSharp();
+  ObetenerSharCm();
   // DetectarErrores();
 
   if (JSUMO_der > Rival && Distancia < 18 &&
@@ -59,12 +60,12 @@ void AtaqueDER() {
       Serial.println("Atacar 4");
   }
 
-  if (SHARP_der > 0 && SHARP_der < RivalSharp) { // Sharp derecho
+/*   if (SHARP_der > 0 && SHARP_der < RivalSharp) { // Sharp derecho
     MotorDerStop();
     MotorIzqGoGhirar();
     if (DEBUG_ESTRATEGIA)
       Serial.println("SHARP: Rival a la DERECHA");
-  }
+  } */
 
   if (SHARP_izq > 0 && SHARP_izq < RivalSharp) { // Sharp izquierdo
     MotorDerGoGhirar();
@@ -91,7 +92,7 @@ void AtaqueDER() {
 void AtaqueIZQ() {
   EnviarPulso();
   SensarSensores();
-  LeerSharp();
+  ObetenerSharCm();
   // DetectarErrores();
 
   if (JSUMO_der > Rival && Distancia < 18 &&
@@ -138,12 +139,12 @@ void AtaqueIZQ() {
       Serial.println("Atacar 4");
   }
 
-  if (SHARP_der > 0 && SHARP_der < RivalSharp) { // Sharp derecho
+/*   if (SHARP_der > 0 && SHARP_der < RivalSharp) { // Sharp derecho
     MotorDerStop();
     MotorIzqGoGhirar();
     if (DEBUG_ESTRATEGIA)
       Serial.println("SHARP: Rival a la DERECHA");
-  }
+  } */
 
   if (SHARP_izq > 0 && SHARP_izq < RivalSharp) { // Sharp izquierdo
     MotorDerGoGhirar();
@@ -170,7 +171,7 @@ void AtaqueIZQ() {
 void EsperoDER() {
   EnviarPulso();
   SensarSensores();
-  LeerSharp();
+  ObetenerSharCm();
   // DetectarErrores();
 
   if (Distancia < 75 && Distancia > 19) {
@@ -248,12 +249,12 @@ void EsperoDER() {
       Serial.println("SHARP: Rival a la IZQUIERDA");
   }
 
-  if (SHARP_der > 0 && SHARP_der < RivalSharp) {
+/*   if (SHARP_der > 0 && SHARP_der < RivalSharp) {
     MotorDerBaGhirar();
     MotorIzqGoGhirar();
     if (DEBUG_ESTRATEGIA)
       Serial.println("SHARP: Rival a la DERECHA");
-  }
+  } */
 
   if (ENEABLE_QRE) { // QRE
     if (QREder < BordeTatami || QREizq < BordeTatami) {
@@ -273,7 +274,7 @@ void EsperoDER() {
 void EsperoIZQ() {
   EnviarPulso();
   SensarSensores();
-  LeerSharp();
+  ObetenerSharCm();
   // DetectarErrores();
 
   if (Distancia < 75 && Distancia > 19) {
@@ -350,13 +351,13 @@ void EsperoIZQ() {
     if (DEBUG_ESTRATEGIA)
       Serial.println("SHARP: Rival a la IZQUIERDA");
   }
-
+/* 
   if (SHARP_der > 0 && SHARP_der < RivalSharp) {
     MotorDerBaGhirar();
     MotorIzqGoGhirar();
     if (DEBUG_ESTRATEGIA)
       Serial.println("SHARP: Rival a la DERECHA");
-  }
+  } */
 
   if (ENEABLE_QRE) { // QRE
     if (QREder < BordeTatami || QREizq < BordeTatami) {
@@ -376,15 +377,15 @@ void EsperoIZQ() {
 void RapidoDerecha() {
   EnviarPulso();
   SensarSensores();
-  LeerSharp();
+  ObetenerSharCm();
   // DetectarErrores();
 
-  if (SHARP_der < RivalSharp) {
+/*   if (SHARP_der < RivalSharp) {
     MotorDerBaRAPIDO();
     MotorIzqGoRAPIDO();
     if (DEBUG_ESTRATEGIA)
       Serial.println("SHARP: Rival a la DERECHA");
-  }
+  } */
 
   if (Distancia > 50) {
     MotorDerBaRAPIDO();
@@ -411,7 +412,7 @@ void RapidoDerecha() {
 void RapidoIzquierda() {
   EnviarPulso();
   SensarSensores();
-  LeerSharp();
+  ObetenerSharCm();
   // DetectarErrores();
 
   if (SHARP_izq < RivalSharp) {
@@ -513,7 +514,7 @@ void Deslizar() {
 void EsperoWithFlags() {
   EnviarPulso();
   SensarSensores();
-  LeerSharp();
+  ObetenerSharCm();
   // DetectarErrores();
 
   if (Distancia < 75 && Distancia > 19) {
@@ -571,14 +572,14 @@ void EsperoWithFlags() {
     if (DEBUG_ESTRATEGIA)
       Serial.println("SHARP: Rival a la IZQUIERDA");
   }
-
+/* 
   if (SHARP_der < RivalSharp && SHARP_der > 0) {
     MotorDerGoGhirar();
     MotorIzqBaGhirar();
     if (DEBUG_ESTRATEGIA)
       Serial.println("SHARP: Rival a la DERECHA");
   }
-
+ */
   /*
   if (Distancia < 35 && SHARP_der < RivalSharp)
   {
