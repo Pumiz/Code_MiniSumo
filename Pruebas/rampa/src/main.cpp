@@ -1,37 +1,69 @@
-#define motorPin 9  // Pin PWM al que está conectado el motor
-#define rampTime 2000  // Tiempo total de la rampa en milisegundos (2 segundos en este ejemplo)
-#define maxSpeed 255  // Velocidad máxima (valor PWM máximo)
-#define updateInterval 20  // Intervalo de actualización en milisegundos
+#include <Arduino.h>
 
-unsigned long prevUpdateTime = 0;
-int currentSpeed = 0;
+#define MOTOR_DER_1 6
+#define MOTOR_DER_2 5
+
+#define MOTOR_IZQ_1 8
+#define MOTOR_IZQ_2 7
+
+#define PWM_MOTOR_DER 3
+#define PWM_MOTOR_IZQ 11
 
 void setup() {
-  Serial.begin(9600);
-  pinMode(motorPin, OUTPUT);
+  pinMode(MOTOR_DER_1, OUTPUT);
+  pinMode(MOTOR_DER_2, OUTPUT);
+  pinMode(PWM_MOTOR_DER, OUTPUT);
+
+  pinMode(MOTOR_IZQ_1, OUTPUT);
+  pinMode(MOTOR_IZQ_2, OUTPUT);
+  pinMode(PWM_MOTOR_IZQ, OUTPUT);
 }
 
 void loop() {
-  unsigned long currentTime = millis();
+  // ambos motores van hacia adelante con el orden en el que estan declarados.
+  // cada motor corresponde al que esta declarado.
 
-  if (currentTime - prevUpdateTime >= updateInterval) {
-    prevUpdateTime = currentTime;
+  digitalWrite(MOTOR_DER_1, HIGH);
+  digitalWrite(MOTOR_DER_2, LOW);
+  analogWrite(PWM_MOTOR_DER, 60);
 
-    if (currentSpeed < maxSpeed) {
-      currentSpeed += maxSpeed / (rampTime / updateInterval);
-      if (currentSpeed > maxSpeed) {
-        currentSpeed = maxSpeed;
-      }
-    }
+  delay(3000);
 
-    analogWrite(motorPin, currentSpeed);
+  digitalWrite(PWM_MOTOR_DER, 0);
+  digitalWrite(PWM_MOTOR_IZQ, 0);
 
-    if (currentSpeed >= maxSpeed) {
-      // La rampa ha terminado
-      // Realiza alguna acción con el motor (opcional)
-    }
-    Serial.println(currentSpeed);
-  }
+  delay(2000);
 
-  // El resto de tu código principal puede seguir ejecutándose aquí
+  digitalWrite(MOTOR_IZQ_1, HIGH);
+  digitalWrite(MOTOR_IZQ_2, LOW);
+  analogWrite(PWM_MOTOR_IZQ, 60);
+
+  delay(3000);
+
+  digitalWrite(PWM_MOTOR_DER, 0);
+  digitalWrite(PWM_MOTOR_IZQ, 0);
+
+  delay(2000);
+
+    digitalWrite(MOTOR_DER_1, LOW);
+  digitalWrite(MOTOR_DER_2, HIGH);
+  analogWrite(PWM_MOTOR_DER, 60);
+
+  delay(3000);
+
+  digitalWrite(PWM_MOTOR_DER, 0);
+  digitalWrite(PWM_MOTOR_IZQ, 0);
+
+  delay(2000);
+
+  digitalWrite(MOTOR_IZQ_1, LOW);
+  digitalWrite(MOTOR_IZQ_2, HIGH);
+  analogWrite(PWM_MOTOR_IZQ, 60);
+
+  delay(3000);
+
+  digitalWrite(PWM_MOTOR_DER, 0);
+  digitalWrite(PWM_MOTOR_IZQ, 0);
+
+  delay(2000);
 }
