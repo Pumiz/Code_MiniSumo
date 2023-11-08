@@ -12,6 +12,25 @@ void LimpiarRuedas() {
 void Ataque() {
   EnviarPulso();
   SensarSensores();
+  SeleccionPosicion();
+
+  if (Buscar == false) {
+    switch (dipConbinedState) {
+    case 1: // RIVAL AL COSTADO RECTO
+
+      break;
+
+    case 2: // RIVAL EN EL MEDIO DEL TATAMI
+      break;
+
+    case 3: // RIVAL EN EL OTRO EXTREMO DEL TATAMI
+      break;
+
+    case 4: // BUSCO POR DEFAULT
+      Buscar = true;
+      break;
+    }
+  }
 
   if (JSUMO_der > Rival && Distancia < 18 && JSUMO_izq > Rival) {
     // Ven los 3 sensores
@@ -26,17 +45,17 @@ void Ataque() {
     MotorIzq.Go(VELOCIDAD_ATAQUE);
     if (DEBUG_ACCIONES)
       Serial.println("Atacar2");
-  } else if (Distancia > 60 && caso == Ataque_Derecha) {
+  } else if (Distancia > 60 && caso == Ataque_Derecha && Buscar == true) {
     // Busco hacia la derecha
-    MotorDer.Stop();
-    MotorIzq.Go(VELOCIDAD_GHIRARSLOW);
+    MotorDer.Ba(VELOCIDAD_BUSCAR);
+    MotorIzq.Go(VELOCIDAD_BUSCAR);
     if (DEBUG_ACCIONES) {
       Serial.println("Buscar derecha");
     }
-  } else if (Distancia > 60 && caso == Ataque_Izquierda) {
+  } else if (Distancia > 60 && caso == Ataque_Izquierda && Buscar == true) {
     // Busco hacia la izquierda
-    MotorDer.Go(VELOCIDAD_GHIRARSLOW);
-    MotorIzq.Stop();
+    MotorDer.Go(VELOCIDAD_BUSCAR);
+    MotorIzq.Ba(VELOCIDAD_BUSCAR);
     if (DEBUG_ACCIONES) {
       Serial.println("Buscar izquierda");
     }
@@ -73,12 +92,12 @@ void Ataque() {
         Serial.println("SHARP: Rival a la DERECHA");
     } */
 
-/*   if (SHARP_izq > 0 && SHARP_izq < RivalSharp) { // Sharp izquierdo
-    MotorDer.Go(VELOCIDAD_GHIRAR);
-    MotorIzq.Stop();
-    if (DEBUG_ACCIONES)
-      Serial.println("SHARP: Rival a la IZQUIERDA");
-  } */
+  /*   if (SHARP_izq > 0 && SHARP_izq < RivalSharp) { // Sharp izquierdo
+      MotorDer.Go(VELOCIDAD_GHIRAR);
+      MotorIzq.Stop();
+      if (DEBUG_ACCIONES)
+        Serial.println("SHARP: Rival a la IZQUIERDA");
+    } */
 
   if (ENEABLE_QRE) { // QRE
     if (QREder < BordeTatami || QREizq < BordeTatami) {
@@ -86,7 +105,7 @@ void Ataque() {
         Serial.println("Me caigo weon");
       MotorDer.Go(VELOCIDAD_LIMPIAR);
       MotorIzq.Ba(VELOCIDAD_LIMPIAR);
-      delay(300);
+      delay(500);
       MotorDer.Go(VELOCIDAD_LIMPIAR);
       MotorIzq.Ba(VELOCIDAD_LIMPIAR);
       delay(300);
@@ -99,25 +118,25 @@ void Espero() {
   EnviarPulso();
   SensarSensores();
 
-  if (Distancia < 75 && Distancia > 19) {
+  if (Distancia < 75 && Distancia >= 10) {
     MotorDer.Stop();
     MotorIzq.Stop();
     if (DEBUG_ACCIONES)
       Serial.println("Te vi...");
-    Tiempo_acorralar_actual = millis();
+    tiempoAcorralarActual = millis();
   } else if (Distancia > 75 && caso == Espero_Derecha && Visado == false) {
-    MotorDer.Stop();
-    MotorIzq.Go(VELOCIDAD_GHIRARSLOW);
+    MotorDer.Ba(VELOCIDAD_BUSCAR);
+    MotorIzq.Go(VELOCIDAD_BUSCAR);
     if (DEBUG_ACCIONES)
       Serial.println("Buscar derecha");
   } else if (Distancia > 75 && caso == Espero_Izquierda && Visado == false) {
-    MotorDer.Go(VELOCIDAD_GHIRARSLOW);
-    MotorIzq.Stop();
+    MotorDer.Go(VELOCIDAD_BUSCAR);
+    MotorIzq.Ba(VELOCIDAD_BUSCAR);
     if (DEBUG_ACCIONES)
       Serial.println("Buscar izquierda");
   }
 
-  if (Tiempo_acorralar_actual > Tiempo_acorralar_anterior) {
+  if (tiempoAcorralarActual > tiempoAcorralarAnterior) {
     Visado = true;
     MotorDer.Go(VELOCIDAD_GHIRARSLOW);
     MotorIzq.Go(VELOCIDAD_GHIRARSLOW);
@@ -129,16 +148,16 @@ void Espero() {
     Visado = true;
     MotorDer.Ba(VELOCIDAD_GHIRARSLOW);
     MotorIzq.Go(VELOCIDAD_GHIRARSLOW);
-    Tiempo_acorralar_anterior = Tiempo_acorralar_actual + 3000;
+    tiempoAcorralarAnterior = tiempoAcorralarActual + 3000;
     if (DEBUG_ACCIONES)
       Serial.println("Te vas a la DERECHA");
   }
 
   if (JSUMO_izq > Rival) {
     Visado = true;
-    MotorDer.Go(VELOCIDAD_GHIRARSLOW); //antes este era Go
+    MotorDer.Go(VELOCIDAD_GHIRARSLOW); // antes este era Go
     MotorIzq.Ba(VELOCIDAD_GHIRARSLOW);
-    Tiempo_acorralar_anterior = Tiempo_acorralar_actual + 3000;
+    tiempoAcorralarAnterior = tiempoAcorralarActual + 3000;
     if (DEBUG_ACCIONES)
       Serial.println("Te vas a la IZQUIERDA");
   } else {
@@ -173,12 +192,12 @@ void Espero() {
       Serial.println("ATACAR 4");
   }
 
-/*   if (SHARP_izq > 0 && SHARP_izq < RivalSharp) {
-    MotorDer.Go(VELOCIDAD_GHIRAR);
-    MotorIzq.Ba(VELOCIDAD_GHIRAR);
-    if (DEBUG_ACCIONES)
-      Serial.println("SHARP: Rival a la IZQUIERDA");
-  } */
+  /*   if (SHARP_izq > 0 && SHARP_izq < RivalSharp) {
+      MotorDer.Go(VELOCIDAD_GHIRAR);
+      MotorIzq.Ba(VELOCIDAD_GHIRAR);
+      if (DEBUG_ACCIONES)
+        Serial.println("SHARP: Rival a la IZQUIERDA");
+    } */
 
   /*   if (SHARP_der > 0 && SHARP_der < RivalSharp) {
       MotorDer.BaGhirar;
@@ -193,7 +212,7 @@ void Espero() {
         Serial.println("Me caigo weon");
       MotorDer.Go(VELOCIDAD_LIMPIAR);
       MotorIzq.Ba(VELOCIDAD_LIMPIAR);
-      delay(300);
+      delay(500);
       MotorDer.Go(VELOCIDAD_LIMPIAR);
       MotorIzq.Ba(VELOCIDAD_LIMPIAR);
       delay(300);
@@ -202,18 +221,18 @@ void Espero() {
 }
 
 //------------------------Rapido------------------------         10/10 Success
-// correguir si esta bien que solo use un sharp y un jsumo para cada 
+// correguir si esta bien que solo use un sharp y un jsumo para cada
 // sentido de giro al buscar.
 void Rapido() {
   EnviarPulso();
   SensarSensores();
 
-/*   if (SHARP_izq < RivalSharp) {
-    MotorDer.Go(VELOCIDAD_ATAQUERAPIDO);
-    MotorIzq.Ba(VELOCIDAD_ATAQUERAPIDO);
-    if (DEBUG_ACCIONES)
-      Serial.println("SHARP: Rival a la IZQUIERDA");
-  } */
+  /*   if (SHARP_izq < RivalSharp) {
+      MotorDer.Go(VELOCIDAD_ATAQUERAPIDO);
+      MotorIzq.Ba(VELOCIDAD_ATAQUERAPIDO);
+      if (DEBUG_ACCIONES)
+        Serial.println("SHARP: Rival a la IZQUIERDA");
+    } */
 
   /*   if (SHARP_der < RivalSharp) {
       MotorDer.BaRAPIDO;
@@ -278,13 +297,13 @@ void Deslizar() {
     Oponente = 1;
     if (DEBUG_ACCIONES)
       Serial.println("Te vi...");
-    Tiempo_acorralar_actual = millis();
+    tiempoAcorralarActual = millis();
   }
 
   if (JSUMO_der > Rival && Oponente == 1) {
     MotorDer.Go(VELOCIDAD_GHIRARSLOW);
     MotorIzq.Ba(VELOCIDAD_GHIRARSLOW);
-    Tiempo_acorralar_anterior = Tiempo_acorralar_actual + 3000;
+    tiempoAcorralarAnterior = tiempoAcorralarActual + 3000;
     if (DEBUG_ACCIONES)
       Serial.println("Te vas a la DERECHA");
   }
@@ -292,7 +311,7 @@ void Deslizar() {
   if (JSUMO_izq > Rival && Oponente == 1) {
     MotorDer.Ba(VELOCIDAD_GHIRARSLOW);
     MotorIzq.Go(VELOCIDAD_GHIRARSLOW);
-    Tiempo_acorralar_anterior = Tiempo_acorralar_actual + 3000;
+    tiempoAcorralarAnterior = tiempoAcorralarActual + 3000;
     if (DEBUG_ACCIONES)
       Serial.println("Te vas a la IZQUIERDA");
   }
@@ -333,7 +352,7 @@ void EsperoWithFlags() {
     MotorIzq.Stop();
     if (DEBUG_ACCIONES)
       Serial.println("Te vi...");
-    Tiempo_acorralar_actual = millis();
+    tiempoAcorralarActual = millis();
   } else {
     MotorDer.Stop();
     MotorIzq.Go(VELOCIDAD_GHIRARSLOW);
@@ -348,7 +367,7 @@ void EsperoWithFlags() {
       Serial.println("ATACAR");
   }
 
-  if (millis() > Tiempo_acorralar_anterior) {
+  if (millis() > tiempoAcorralarAnterior) {
     MotorDer.Go(VELOCIDAD_GHIRARSLOW);
     MotorIzq.Go(VELOCIDAD_GHIRARSLOW);
     if (DEBUG_ACCIONES)
@@ -360,7 +379,7 @@ void EsperoWithFlags() {
       MotorDer.Go(VELOCIDAD_GHIRARSLOW);
     if (EneableFlags)
       MotorIzq.Ba(VELOCIDAD_GHIRARSLOW);
-    Tiempo_acorralar_anterior = Tiempo_acorralar_actual + 3000;
+    tiempoAcorralarAnterior = tiempoAcorralarActual + 3000;
     if (DEBUG_ACCIONES)
       Serial.println("Te vas a la DERECHA");
     EneableFlags = false;
@@ -371,7 +390,7 @@ void EsperoWithFlags() {
       MotorDer.Ba(VELOCIDAD_GHIRARSLOW);
     if (EneableFlags)
       MotorIzq.Go(VELOCIDAD_GHIRARSLOW);
-    Tiempo_acorralar_anterior = Tiempo_acorralar_actual + 3000;
+    tiempoAcorralarAnterior = tiempoAcorralarActual + 3000;
     if (DEBUG_ACCIONES)
       Serial.println("Te vas a la IZQUIERDA");
     EneableFlags = false;
@@ -383,7 +402,7 @@ void EsperoWithFlags() {
     if (DEBUG_ACCIONES)
       Serial.println("SHARP: Rival a la IZQUIERDA");
   }
-  
+
   /*
     if (SHARP_der < RivalSharp && SHARP_der > 0) {
       MotorDer.GoGhirar;
