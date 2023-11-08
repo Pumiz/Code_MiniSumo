@@ -8,18 +8,17 @@
 #define DEBUG_ACCIONES 0 // Debug para saber en que if cae en cada estrategia.
 #define DEBUG_CASOS 0    // Debug despues de los 5 segundos.
 #define DEBUG_ULTRASONIDO 0
+#define DEBUG_DIP 0
 #define DEBUG_SHARP 0
 #define ENEABLE_QRE 0 // 1 permitido, 0 no permitido
 
-const int Pines_Salida[2] = {
-    PIN_TRIG,
-    PIN_LED,
-};
+int dipConbinedState;
+const int numLecturas = 10;
+int sumaLecturas = 0;
 
-const int Pines_Entrada[2] = {
-    PIN_ECHO,
-    PIN_PULSADOR,
-};
+const int Pines_Salida[2] = {PIN_TRIG, PIN_LED};
+
+const int Pines_Entrada[4] = {PIN_ECHO, PIN_PULSADOR, PIN_DIP_1, PIN_DIP_2};
 
 //-------------------MOTORES--------------------
 Motores MotorDer(MOTOR_DER_1, MOTOR_DER_2, PWM_MOTOR_DER);
@@ -50,7 +49,7 @@ String ESTADOS[] = {
 // VERDE:   ECHO   AMARILLO
 // NEGRO:   GND    BLANCO MATE
 
-long Tiempo_Ultra;
+long TiempoUltra;
 long Distancia;
 
 //--------------------SHARP`S--------------------
@@ -107,7 +106,7 @@ void AsignacionPines() {
     pinMode(pin, INPUT);
   }
 
-  for (int idx = 0; idx < 2; idx++) {
+  for (int idx = 0; idx < 4; idx++) {
     int pin = Pines_Entrada[idx];
     pinMode(pin, INPUT);
   }
@@ -124,17 +123,33 @@ void EncenderLed() {
   digitalWrite(PIN_LED, HIGH);
   delay(250);
   digitalWrite(PIN_LED, LOW);
-  delay(250);
 }
 
 void EnviarPulso() {
   digitalWrite(PIN_TRIG, HIGH);
   delay(10);
   digitalWrite(PIN_TRIG, LOW);
-  Tiempo_Ultra = pulseIn(PIN_ECHO, HIGH);
-  Distancia = Tiempo_Ultra / 58;
+  TiempoUltra = pulseIn(PIN_ECHO, HIGH);
+  Distancia = TiempoUltra / 58;
   if (DEBUG_ULTRASONIDO)
     Serial.println(Distancia);
+}
+
+void SeleccionPosicion() {
+  bool stateDip1 = analogRead(PIN_DIP_1);
+  bool stateDip2 = analogRead(PIN_DIP_2);
+  dipConbinedState = (stateDip1 << 1) | stateDip2;
+  dipConbinedState = dipConbinedState + 1;
+  delay(100);
+
+  if (DEBUG_DIP) {
+    Serial.print("DIP A: ");
+    Serial.print(stateDip1);
+    Serial.print(" - DIP B: ");
+    Serial.print(stateDip2);
+    Serial.print(" - Combined State: ");
+    Serial.println(dipConbinedState);
+  }
 }
 
 void SensarSensores() {
@@ -148,12 +163,16 @@ void SensarSensores() {
 }
 
 void Menu() {
+  SeleccionPosicion();
   while (!digitalRead(PIN_PULSADOR)) {
     Tiempo++;
+    if (Tiempo >= TiempoMax)
+      Tiempo = TiempoMax;
+
     Serial.println(Tiempo);
   }
 
-  if (Tiempo > Tiempo_Min && Tiempo < Tiempo_Max) {
+  if (Tiempo > Tiempo_Min && Tiempo < TiempoMax) {
     // Cambiar estrategia
     caso++;
     Tiempo = 0;
@@ -162,7 +181,7 @@ void Menu() {
     if (DEBUG_PULSADOR)
       Serial.println(ESTADOS[caso]);
     Pantalla = true;
-  } else if (Tiempo > Tiempo_Max && Pantalla == true) {
+  } else if (Tiempo >= TiempoMax && Pantalla == true) {
     // Entrar en el modo
 
     digitalWrite(PIN_LED, HIGH);
@@ -271,6 +290,7 @@ void setup() {
 
 //--------------------LOOP-----------------------
 void loop() {
+  // SeleccionPosicion();
   Menu();
   Selector();
 }
