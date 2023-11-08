@@ -7,13 +7,13 @@
 #define PWM_MOTOR_DER 3
 #define PWM_MOTOR_IZQ 11
 
-#define VELOCIDAD_BUSCAR 70    // 150
-#define VELOCIDAD_VER_FLAGS 80 // 175  //testar velocidad antes de establecer.
-#define VELOCIDAD_ATAQUE 170   // 255
-#define VELOCIDAD_ATAQUERAPIDO 150 // 180
+#define VELOCIDAD_BUSCAR 45
+#define VELOCIDAD_VER_FLAGS 80 //testar velocidad antes de establecer.
+#define VELOCIDAD_ATAQUE 170
+#define VELOCIDAD_ATAQUERAPIDO 150
 #define VELOCIDAD_GHIRAR 100       // 230 Reducir si va muy rápido.
-#define VELOCIDAD_LIMPIAR 80       // 200
-#define VELOCIDAD_GHIRARSLOW 30    // 60
+#define VELOCIDAD_LIMPIAR 80
+#define VELOCIDAD_GHIRARSLOW 30
 
 #define PIN_PULSADOR 4
 #define PIN_LED 13
@@ -30,16 +30,19 @@
 #define PIN_QRE_DERECHO A0
 #define PIN_QRE_IZQUIERDO A1
 
-unsigned long Tiempo_acorralar_anterior = 25000;
-unsigned long Tiempo_acorralar_actual = 0;
+#define PIN_DIP_1 A0
+#define PIN_DIP_2 A1
+
+unsigned long tiempoAcorralarAnterior = 25000;
+unsigned long tiempoAcorralarActual = 0;
 int caso = 0;
 unsigned int Tiempo = 0;
-unsigned long Tiempo_Max = 160; // aprox es 1seg.
+unsigned long TiempoMax = 160; // aprox es 1seg.
 unsigned int Tiempo_Min = 20;
 bool Pantalla = true;
 bool Mode = false;
 bool EneableFlags = true;
 bool Visado = false;
-bool Ataque_Derecho = false;
+bool Buscar = false;
 int Hielo = 1;
 int Oponente = 0;
